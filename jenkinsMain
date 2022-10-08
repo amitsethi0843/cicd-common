@@ -1,0 +1,21 @@
+pipeline {
+  agent none
+    tools {
+        maven "MAVEN_HOME"
+    }
+    
+  stages {
+	
+	stage('Starting Main') {
+	
+		steps{
+			echo --------------*********-------------- Main Pipeline Started --------------*********--------------'
+			def steps=(${params.buildSteps}).split(',')
+			
+		}
+		
+	}
+  
+  }
+ 
+ }
