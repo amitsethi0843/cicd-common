@@ -16,7 +16,7 @@ pipeline {
 		steps{
 			script{
 				echo "--------------*********-------------- Main Pipeline Started --------------*********--------------"
-				def steps=($buildSteps).split(',')
+				def steps=(params.buildSteps).split(',')
 			}
 		}
 		
