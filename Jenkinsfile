@@ -6,6 +6,8 @@ pipeline {
     
 	parameters {
 		string(name: 'buildSteps', defaultValue: '',description:'Stages to process')
+		string(name: 'env', defaultValue: 'develop',description:'Environment')
+		
 	}
   stages {
 	
@@ -13,7 +15,7 @@ pipeline {
 	
 		steps{
 			script{
-				echo --------------*********-------------- Main Pipeline Started --------------*********--------------'
+				echo "--------------*********-------------- Main Pipeline Started --------------*********--------------"
 				def steps=(${params.buildSteps}).split(',')
 			}
 		}
