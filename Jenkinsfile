@@ -15,7 +15,10 @@ pipeline {
 	
 		steps{
 			script{
-				echo "--------------*********-------------- Main Pipeline Started --------------*********--------------" ++ params.buildSteps
+				print "--------------*********-------------- Main Pipeline Started --------------*********--------------" 
+				
+				print "Environment : ${params.buildSteps}"
+				print "Build Steps : ${params.buildSteps}"
 				def steps=(params.buildSteps).split(',')
 			}
 		}
