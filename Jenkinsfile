@@ -24,8 +24,8 @@ pipeline {
 				print "--------------*********-------------- Main Pipeline Started --------------*********--------------" 
 				sh "pwd"
 				sh "$WORKSPACE"
-				print "Environment : ${params.environment}"
-				print "Build Steps : ${params.buildSteps}"
+				print params.environment
+				print params.buildSteps
 				print env.BRANCH_NAME
 				def steps=(params.buildSteps).split(',')
 			}
