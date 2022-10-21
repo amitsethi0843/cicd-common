@@ -11,7 +11,7 @@ pipeline {
 	parameters {
 		string(name:'path', defaultValue:'',description:'Path to Project')
 		string(name: 'buildSteps', defaultValue: '',description:'Stages to process')
-		string(name: 'environment', defaultValue: '',description:'Environment')
+		string(name: 'mule.env', defaultValue: '',description:'Environment')
 		string(name: 'datadog', defaultValue: 'false',description:'Environment')
 		
 	}
