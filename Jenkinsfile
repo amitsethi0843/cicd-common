@@ -23,7 +23,7 @@ pipeline {
 			script{
 				print "--------------*********-------------- Main Pipeline Started --------------*********--------------" 
 				sh "pwd"
-				sh "$WORKSPACE"
+				print "$WORKSPACE"
 				print params.buildSteps
 				print env.BRANCH_NAME
 				def steps=(params.buildSteps).split(',')
