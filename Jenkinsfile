@@ -12,7 +12,7 @@ pipeline {
 		string(name:'path', defaultValue:'',description:'Path to Project')
 		string(name: 'buildSteps', defaultValue: '',description:'Stages to process')
 		string(name: 'environment', defaultValue: '',description:'Environment')
-		string(name: 'datadogDog', defaultValue: 'false',description:'Environment')
+		string(name: 'datadog', defaultValue: 'false',description:'Environment')
 		
 	}
   stages {
@@ -24,7 +24,6 @@ pipeline {
 				print "--------------*********-------------- Main Pipeline Started --------------*********--------------" 
 				sh "pwd"
 				sh "$WORKSPACE"
-				print params.environment
 				print params.buildSteps
 				print env.BRANCH_NAME
 				def steps=(params.buildSteps).split(',')
