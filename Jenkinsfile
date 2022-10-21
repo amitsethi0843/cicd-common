@@ -7,7 +7,7 @@ pipeline {
 		ANYPOINT_CREDENTIALS = credentials('anypoint.credentials')
         SIT_ENV = credentials('SIT_CRED')
         ORG = credentials('ORG_CRED')
-		SCRIPT_PATH= $WORKSPACE
+		SCRIPT_PATH= "$WORKSPACE"
 
 	}
 	parameters {
