@@ -27,6 +27,8 @@ pipeline {
 				print WORKSPACE
 				print params.buildSteps
 				print params.gitBranch
+				print params.path
+				print SCRIPT_PATH
 				def steps=(params.buildSteps).split(',')
 			}
 		}
