@@ -9,7 +9,7 @@ pipeline {
         ORG = credentials('ORG_CRED')
 	}
 	parameters {
-		string(nsme:'path', defaultValue:'',description:'Path to Project')
+		string(name:'path', defaultValue:'',description:'Path to Project')
 		string(name: 'buildSteps', defaultValue: '',description:'Stages to process')
 		string(name: 'environment', defaultValue: '',description:'Environment')
 		string(name: 'datadogDog', defaultValue: 'false',description:'Environment')
