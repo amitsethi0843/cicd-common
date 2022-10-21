@@ -22,7 +22,6 @@ pipeline {
 		steps{
 			script{
 				print "--------------*********-------------- Main Pipeline Started --------------*********--------------" 
-				sh "pwd"
 				print "$WORKSPACE"
 				print params.buildSteps
 				print env.BRANCH_NAME
