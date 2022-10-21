@@ -24,7 +24,7 @@ pipeline {
 				print "--------------*********-------------- Main Pipeline Started --------------*********--------------" 
 				print "$WORKSPACE"
 				print params.buildSteps
-				print env.BRANCH_NAME
+				print GIT_BRANCH
 				def steps=(params.buildSteps).split(',')
 			}
 		}
