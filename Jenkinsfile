@@ -24,7 +24,7 @@ pipeline {
 		steps{
 			script{
 				print "--------------*********-------------- Main Pipeline Started --------------*********--------------" 
-				print $WORKSPACE
+				print WORKSPACE
 				print params.buildSteps
 				print params.gitBranch
 				def steps=(params.buildSteps).split(',')
