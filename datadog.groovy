@@ -7,10 +7,10 @@ void dataDogIntegration(def targetWorkspace) {
 		originalLog.delete()
 		//sh "sudo rm ${targetPath}log4j2.xml"
 		print "Removed log4j2 from ${targetPath}"
-		def srcLog4J = new File("resources/log4j2.xml")
+		def srcLog4J = new File("/var/lib/jenkins/workspace/jenkins-scripts/resources/log4j2.xml")
 		def targetLog4J = new File("${targetPath}log4j2.xml")
 		targetLog4J << srcLog4J.text
-		//sh "sudo cp resources/log4j2.xml ${targetPath}"
+		//sh "sudo cp xresources/log4j2.xml ${targetPath}"
 		print "Copied datadog log4j2 to ${targetPath}"
 	}
 	catch(Exception ex){
