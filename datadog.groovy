@@ -1,11 +1,21 @@
 void dataDogIntegration(def targetWorkspace) {
-	def targetPath =  "${targetWorkspace}/src/main/resources/"
 	print "----------------Datadog Integration Started----------------"
-	sh "sudo rm ${targetPath}log4j2.xml"
-	print "Removed log4j2 from ${targetPath}"
-	sh "sudo cp resources/log4j2.xml ${targetPath}"
-	print "Copied datadog log4j2 to ${targetPath}"
-	
+
+	try{
+		def targetPath =  "${targetWorkspace}/src/main/resources/"
+		File originalLog = new File("${targetPath}log4j2.xml")
+		originalLog.delete()
+		//sh "sudo rm ${targetPath}log4j2.xml"
+		print "Removed log4j2 from ${targetPath}"
+		def srcLog4J = new File("resources/log4j2.xml")
+		def targetLog4J = new File("${targetPath}log4j2.xml")
+		targetLog4J << srcLog4J.text
+		//sh "sudo cp resources/log4j2.xml ${targetPath}"
+		print "Copied datadog log4j2 to ${targetPath}"
+	}
+	catch(Exception ex){
+		print "Error occured" + ex.getMessage()
+	}
 }
 
 return this
@@ -13,3 +23,4 @@ return this
 
 
 
+)
