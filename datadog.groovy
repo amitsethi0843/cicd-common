@@ -1,4 +1,4 @@
-void dataDogIntegration(def targetWorkspace) {
+void dataDogIntegration(def targetWorkspace) throws Exception {
 	print "----------------Datadog Integration Started----------------"
 
 	try{
@@ -15,7 +15,8 @@ void dataDogIntegration(def targetWorkspace) {
 		print "Copied datadog log4j2 to ${targetPath}"
 	}
 	catch(Exception ex){
-		print "Error occured" + ex.getMessage()
+		print "---------- Error occured ---------- " + ex.getMessage()
+		throw ex
 	}
 }
 

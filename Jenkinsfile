@@ -31,7 +31,8 @@ pipeline {
 			        CONTINUE = false
 			    }
 			    else{
-    			    ENV =((params.gitBranch.split("/"))[1]).toLowerCase() 
+			        def gitBranch = ((params.gitBranch.split("/"))[1]).toLowerCase()
+    			    ENV = gitBranch.equals('main') ? 'prod' : (gitBranch.equals('uat') ? 'uat' : 'sit')
         			CONTINUE = true
 			    }
 			}
@@ -50,7 +51,13 @@ pipeline {
 			script {
 			    dir(JENKINS_SCRIPT_PATH) {
 			         def datadog = load "datadog.groovy"
-			         datadog.dataDogIntegration(params.path)
+			         try {
+			             datadog.dataDogIntegration(params.path)
+			         }
+			         catch (Exception ex){
+			             println "--------- Stopping further stages ---------------------"
+			             CONTINUE = false
+			         }
 			    }
 			}
 			
@@ -68,8 +75,8 @@ pipeline {
 			echo "--------------*********-------------- Build Started --------------*********--------------"
 			script {
 			    dir(JENKINS_SCRIPT_PATH) {
-			         def maven = load "maven.groovy"
-			         maven.build()
+			        // def maven = load "maven.groovy"
+			     //    maven.build()
 			    }
 			  }
 			//script{
@@ -91,7 +98,7 @@ pipeline {
 			    dir(JENKINS_SCRIPT_PATH) {
 			     //def deployParams = [chUser:ANYPOINT_CREDENTIALS_USR, chPassword:ANYPOINT_CREDENTIALS_PSW, env:ENV, chClientID:SFDO_ORG_USR, chClientSecret:SFDO_ORG_PSW, key:CPQ_UAT_KEY, secureKey:CPQ_UAT_SECUREKEY, businessGroup:] 
 
-			         def maven = load "maven.groovy"
+			        // def maven = load "maven.groovy"
 			         //maven.deploy(deployParams)
 			    }
 			  }
