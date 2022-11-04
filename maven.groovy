@@ -13,3 +13,5 @@ void deploy (def deployParams){
 
 	sh "mvn clean install deploy -DskipTests -Dcloudhub.username=${deployParams.chUser} -P=${deployParams.env} -Dcloudhub.password=${deployParams.chPassword} -DCLOUDHUB_CLIENT_ID=${deployParams.chClientID} -DCLOUDHUB_CLIENT_SECRET=${deployParams.chClientSecret} -DMULE_KEY=${deployParams.key} -DMULE_SECUREKEY=${deployParams.secureKey}  -DCLOUDHUB_BUSINESS_GROUP=${deployParams.businessGroup}"
 }
+
+return this
