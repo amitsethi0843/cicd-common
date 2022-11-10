@@ -55,7 +55,7 @@ pipeline {
 		    
 			echo "--------------*********-------------- Datadog Integration Started --------------*********--------------"
 			script {
-			sh "ll"
+			sh "ls -li"
 			   // dir(JENKINS_SCRIPT_PATH) {
 			         def datadog = load "datadog.groovy"
 			         try {
