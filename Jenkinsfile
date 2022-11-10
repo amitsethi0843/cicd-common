@@ -1,8 +1,15 @@
+
 def ENV
 def CONTINUE = true
+
 pipeline {
-  agent any
     
+	agent any
+	
+    tools {
+        // Install the Maven version configured as "M3" and add it to the path.
+        maven "MAVEN_HOME"
+    }
 	environment{
 		ANYPOINT_CREDENTIALS = credentials('anypoint.credentials')
         SIT_ENV = credentials('SIT_CRED')
@@ -13,7 +20,7 @@ pipeline {
         CPQ_UAT_SECUREKEY = credentials('CPQ_UAT_SECUREKEY')
 	}
 	parameters {
-		string(name:'path', defaultValue:'',description:'Path to Project')
+		string(name:'appPath', defaultValue:'',description:'Path to Project')
 		string(name: 'buildSteps', defaultValue: '',description:'Stages to process')
 		string(name: 'gitBranch', description:'git branch')
 		string(name: 'project', description:'Project')
@@ -22,7 +29,6 @@ pipeline {
   stages {
 	
 	stage('Starting Main') {
-	    
 		steps{
 		   
 			script{
@@ -52,7 +58,7 @@ pipeline {
 			    dir(JENKINS_SCRIPT_PATH) {
 			         def datadog = load "datadog.groovy"
 			         try {
-			             datadog.dataDogIntegration(params.path)
+			             datadog.dataDogIntegration(params.appPath)
 			         }
 			         catch (Exception ex){
 			             println "--------- Stopping further stages ---------------------"
@@ -74,14 +80,11 @@ pipeline {
 		    
 			echo "--------------*********-------------- Build Started --------------*********--------------"
 			script {
-			    dir(JENKINS_SCRIPT_PATH) {
-			        // def maven = load "maven.groovy"
-			     //    maven.build()
+			    dir(appPath) {
+			       sh "mvn clean install"
 			    }
 			  }
-			//script{
-			    
-			//}
+			
 		}
 	}
 	
