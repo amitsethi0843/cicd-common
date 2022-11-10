@@ -55,7 +55,8 @@ pipeline {
 		    
 			echo "--------------*********-------------- Datadog Integration Started --------------*********--------------"
 			script {
-			    dir(JENKINS_SCRIPT_PATH) {
+			sh "ll"
+			   // dir(JENKINS_SCRIPT_PATH) {
 			         def datadog = load "datadog.groovy"
 			         try {
 			             datadog.dataDogIntegration(params.appPath)
@@ -64,7 +65,7 @@ pipeline {
 			             println "--------- Stopping further stages ---------------------"
 			             CONTINUE = false
 			         }
-			    }
+			   // }
 			}
 			
 		}
