@@ -1,6 +1,7 @@
 
 
-void build(){
+void build(def appPath){
+	sh "cd ${appPath}"
 	sh "mvn clean install"
 }
 

@@ -55,7 +55,6 @@ pipeline {
 		    
 			echo "--------------*********-------------- Datadog Integration Started --------------*********--------------"
 			script {
-			sh "ls -li"
 			   // dir(JENKINS_SCRIPT_PATH) {
 			         def datadog = load "datadog.groovy"
 			         try {
@@ -81,9 +80,9 @@ pipeline {
 		    
 			echo "--------------*********-------------- Build Started --------------*********--------------"
 			script {
-			    dir(appPath) {
-			       sh "mvn clean install"
-			    }
+				def mvn = load "maven.groovy"
+				mvn.build(appPath)
+			   
 			  }
 			
 		}
