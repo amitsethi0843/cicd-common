@@ -81,8 +81,9 @@ pipeline {
 			echo "--------------*********-------------- Build Started --------------*********--------------"
 			script {
 				def mvn = load "maven.groovy"
-				mvn.build(appPath)
-			   
+				dir(appPath) {
+					mvn.build()
+			   }
 			  }
 			
 		}
