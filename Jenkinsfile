@@ -13,7 +13,7 @@ pipeline {
 	environment{
 		ANYPOINT_CREDENTIALS = credentials('anypoint.credentials')
         SIT_ENV = credentials('SIT_CRED')
-        SFDO_ORG = credentials('ORG_CRED')
+        ORG_CREDS = credentials('ORG_CRED')
 		SCRIPT_PATH= "$WORKSPACE"
 		JENKINS_SCRIPT_PATH = "/var/lib/jenkins/workspace/jenkins-scripts/"
         CPQ_UAT_KEY = credentials('CPQ_UAT_KEY')
@@ -97,11 +97,12 @@ pipeline {
 		}
 		steps {
 		    
-		    echo "--------------*********-------------- Deployment Started --------------*********--------------"
+		    echo "--------------*********-------------- Deployment Started --------------*********--------------" ++ ORG_CREDS_USR
 		    script {
 			    dir(JENKINS_SCRIPT_PATH) {
-			     //def deployParams = [chUser:ANYPOINT_CREDENTIALS_USR, chPassword:ANYPOINT_CREDENTIALS_PSW, env:ENV, chClientID:SFDO_ORG_USR, chClientSecret:SFDO_ORG_PSW, key:CPQ_UAT_KEY, secureKey:CPQ_UAT_SECUREKEY, businessGroup:] 
-
+					def businessGroup = (ORG_CREDS_USR == 'a0d147cfbd6d4aac9cef72745020d611')? '' : '' 
+					def deployParams = [chUser:ANYPOINT_CREDENTIALS_USR, chPassword:ANYPOINT_CREDENTIALS_PSW, env:ENV, chClientID:ORG_CREDS_USR , chClientSecret:ORG_CREDS_PSW, key:CPQ_UAT_KEY, secureKey:CPQ_UAT_SECUREKEY, businessGroup: businessGroup] 
+					print deployParams
 			        // def maven = load "maven.groovy"
 			         //maven.deploy(deployParams)
 			    }
