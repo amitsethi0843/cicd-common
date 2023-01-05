@@ -15,7 +15,7 @@ pipeline {
         SIT_ENV = credentials('SIT_CRED')
         ORG_CREDS = credentials('ORG_CRED')
 		SCRIPT_PATH= "$WORKSPACE"
-		JENKINS_SCRIPT_PATH = "/var/lib/jenkins/workspace/jenkins-scripts/"
+		JENKINS_SCRIPT_PATH = "/var/lib/jenkins/workspace/jenkins-main/"
         CPQ_UAT_KEY = credentials('CPQ_UAT_KEY')
         CPQ_UAT_SECUREKEY = credentials('CPQ_UAT_SECUREKEY')
 	}
