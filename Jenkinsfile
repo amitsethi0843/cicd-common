@@ -97,7 +97,8 @@ pipeline {
 		}
 		steps {
 		    
-		    echo "--------------*********-------------- Deployment Started --------------*********--------------" ++ ORG_CREDS_USR
+		    echo "--------------*********-------------- Deployment Started --------------*********--------------" 
+			print ORG_CREDS_USR
 		    script {
 			    dir(JENKINS_SCRIPT_PATH) {
 					def businessGroup = (ORG_CREDS_USR == 'a0d147cfbd6d4aac9cef72745020d611')? '' : '' 
