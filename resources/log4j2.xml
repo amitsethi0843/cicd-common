@@ -17,7 +17,7 @@
         </RollingFile>
         <Http name="DataDog" url="https://http-intake.logs.datadoghq.com/api/v2/logs">
 					<Property name="Content-Type" value="application/json" />
-					<Property name="DD-API-KEY" value="12a84eae68317a57eb0a1b29eaf7888f" />
+					<Property name="DD-API-KEY" value="${sys:mule.ddApiKey}" />
 					<JSONLayout compact="true" eventEol="true" properties="true" stacktraceAsString="true">
 						<KeyValuePair key="host" value="sfdo-${sys:mule.env}" />
 						<KeyValuePair key="appName" value="${sys:mule.appName}" />
