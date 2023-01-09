@@ -18,6 +18,7 @@ pipeline {
 		JENKINS_SCRIPT_PATH = "/var/lib/jenkins/workspace/jenkins-main/"
         CPQ_UAT_KEY = credentials('CPQ_UAT_KEY')
         CPQ_UAT_SECUREKEY = credentials('CPQ_UAT_SECUREKEY')
+		DD_API_KEY= credentials('dd_api_key')
 	}
 	parameters {
 		string(name:'appPath', defaultValue:'',description:'Path to Project')
@@ -104,7 +105,8 @@ pipeline {
 		    script {
 			    dir(JENKINS_SCRIPT_PATH) {
 					def businessGroup = (ORG_CREDS_USR == 'a0d147cfbd6d4aac9cef72745020d611')? '' : '' 
-					def deployParams = [chUser:ANYPOINT_CREDENTIALS_USR, chPassword:ANYPOINT_CREDENTIALS_PSW, env:ENV, chClientID:ORG_CREDS_USR , chClientSecret:ORG_CREDS_PSW, key:CPQ_UAT_KEY, secureKey:CPQ_UAT_SECUREKEY, businessGroup: "Salesforce DevOps"] 
+					def deployParams = [chUser:ANYPOINT_CREDENTIALS_USR, chPassword:ANYPOINT_CREDENTIALS_PSW, env:ENV, chClientID:ORG_CREDS_USR , chClientSecret:ORG_CREDS_PSW, key:CPQ_UAT_KEY, secureKey:CPQ_UAT_SECUREKEY, businessGroup: "Salesforce DevOps"
+										ddApiKey: DD_API_KEY] 
 					print deployParams
 					def mvn = load "maven.groovy"
 					dir(appPath) {
