@@ -1,7 +1,8 @@
 
 def ENV
 def CONTINUE = true
-
+def SUPPORTED_PROJECTS = ["cpq","mavenlink","salesforce devops","ciena","Enterprise Integration"]
+def BUSINESS_GROUP
 pipeline {
     
 	agent any
@@ -16,16 +17,19 @@ pipeline {
         ORG_CREDS = credentials('ORG_CRED')
 		SCRIPT_PATH= "$WORKSPACE"
 		JENKINS_SCRIPT_PATH = "/var/lib/jenkins/workspace/jenkins-main/"
+		CPQ_PROD_KEY = credentials('CPQ_PROD_KEY')
+		CPQ_PROD_SECUREKEY = credentials('CPQ_PROD_SECUREKEY')
         CPQ_UAT_KEY = credentials('CPQ_UAT_KEY')
         CPQ_UAT_SECUREKEY = credentials('CPQ_UAT_SECUREKEY')
-		DD_API_KEY= credentials('dd_api_key')
+		CPQ_SIT_KEY = credentials('CPQ_SIT_KEY')
+		CPQ_SIT_SECUREKEY = credentials('CPQ_SIT_SECUREKEY')
+		DD_API_KEY= credentials('DD_API_KEY')
 	}
 	parameters {
 		string(name:'appPath', defaultValue:'',description:'Path to Project')
 		string(name: 'buildSteps', defaultValue: '',description:'Stages to process')
 		string(name: 'gitBranch', description:'git branch')
 		string(name: 'project', description:'Project')
-		string(name: 'businessGroup', description: 'Anypoint Business Group')
 
 
 	}
@@ -36,12 +40,14 @@ pipeline {
 		   
 			script{
 			    print "--------------*********-------------- Jenkins Main Pipeline Started --------------*********--------------" 
-			    if(params.gitBranch.isBlank() || params.project.isBlank()){
+			    if(params.gitBranch.isBlank() || params.project.isBlank() ||  !(params.project.toLowerCase() in SUPPORTED_PROJECTS)){
 			        CONTINUE = false
 			    }
 			    else{
+
 			        def gitBranch = ((params.gitBranch.split("/"))[1]).toLowerCase()
     			    ENV = gitBranch.equals('main') ? 'prod' : (gitBranch.equals('uat') ? 'uat' : 'sit')
+					BUSINESS_GROUP = params.project.toLowerCase() in ['cpq','mavenlink'] ? "Salesforce DevOps" : null
         			CONTINUE = true
 			    }
 			}
@@ -104,10 +110,11 @@ pipeline {
 			print ORG_CREDS_USR
 		    script {
 			    dir(JENKINS_SCRIPT_PATH) {
-					def businessGroup = (ORG_CREDS_USR == 'a0d147cfbd6d4aac9cef72745020d611')? '' : '' 
-					def deployParams = [chUser:ANYPOINT_CREDENTIALS_USR, chPassword:ANYPOINT_CREDENTIALS_PSW, env:ENV, chClientID:ORG_CREDS_USR , chClientSecret:ORG_CREDS_PSW, key:CPQ_UAT_KEY, secureKey:CPQ_UAT_SECUREKEY, businessGroup: "Salesforce DevOps",
-										ddApiKey: DD_API_KEY] 
-					print deployParams
+					String key = ENV.equals('prod') ? CPQ_PROD_KEY : (ENV.equals('uat') ? CPQ_UAT_KEY : CPQ_SIT_KEY)
+					print "-----------------------------" ++ ENV.equals('prod') ? 'prod key' : (ENV.equals('uat') ? 'uat key' : 'sit key')
+					String secureKey = ENV.equals('prod') ? CPQ_PROD_SECUREKEY : (ENV.equals('uat') ? CPQ_UAT_SECUREKEY : CPQ_SIT_SECUREKEY)
+					def deployParams = [chUser:ANYPOINT_CREDENTIALS_USR, chPassword:ANYPOINT_CREDENTIALS_PSW, env:ENV, chClientID:ORG_CREDS_USR , 
+										chClientSecret:ORG_CREDS_PSW, key:key, secureKey:secureKey, businessGroup: BUSINESS_GROUP, ddApiKey: DD_API_KEY] 
 					def mvn = load "maven.groovy"
 					dir(appPath) {
 						mvn.deploy(deployParams)
