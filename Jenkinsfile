@@ -111,7 +111,7 @@ pipeline {
 		    script {
 			    dir(JENKINS_SCRIPT_PATH) {
 					String key = ENV.equals('prod') ? CPQ_PROD_KEY : (ENV.equals('uat') ? CPQ_UAT_KEY : CPQ_SIT_KEY)
-					print "-----------------------------" ++ ENV.equals('prod') ? 'prod key' : (ENV.equals('uat') ? 'uat key' : 'sit key')
+					print "-----------------------------" ++ (ENV.equals('prod') ? 'prod key' : (ENV.equals('uat') ? 'uat key' : 'sit key'))
 					String secureKey = ENV.equals('prod') ? CPQ_PROD_SECUREKEY : (ENV.equals('uat') ? CPQ_UAT_SECUREKEY : CPQ_SIT_SECUREKEY)
 					def deployParams = [chUser:ANYPOINT_CREDENTIALS_USR, chPassword:ANYPOINT_CREDENTIALS_PSW, env:ENV, chClientID:ORG_CREDS_USR , 
 										chClientSecret:ORG_CREDS_PSW, key:key, secureKey:secureKey, businessGroup: BUSINESS_GROUP, ddApiKey: DD_API_KEY] 
