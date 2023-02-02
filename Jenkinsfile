@@ -124,6 +124,28 @@ pipeline {
 			
 		}
 	}
+	
+	//stage('Disable Logging') {
+		//when {
+			//	expression {
+					//	return (CONTINUE && (params.buildSteps.toLowerCase().split(',')).contains('datadog'))
+				//	}
+			//}
+		//steps{
+		  // 
+			//script{
+				//def appName
+				//dir(appPath) {
+				//	def pom = readMavenPom file: 'pom.xml'
+					//appName = (pom.getArtifactId() + ENV)
+
+				//}
+				//def url = "https://anypoint.mulesoft.com/cloudhub/api/v2/${appName}/"+
+			  //  sh "curl -X PUT https://anypoint.mulesoft.com/cloudhub/api/v2/applications/APP_NAME -H 'authorization: bearer ACCESS_TOKEN' -H 'content-type: application/json' -H 'x-anypnt-env-id: ENV_ID' -H 'x-anypnt-org-id: ORG_ID' -d '{"loggingCustomLog4JEnabled":"true"}'"
+			//}
+		//}
+		
+	//}
   
   }
  
