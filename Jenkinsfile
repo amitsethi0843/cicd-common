@@ -29,9 +29,9 @@ pipeline {
 		string(name:'appPath', defaultValue:'',description:'Path to Project')
 		string(name: 'buildSteps', defaultValue: '',description:'Stages to process')
 		string(name: 'gitBranch', description:'git branch')
-		string(name: 'project', description:'Project')
-
-
+		string(name: 'totalWorkers', description: 'Total Number of Workers')
+		string(name: 'workerSize', description: 'Size of the worker')
+		string(name: 'businessGroup', description: 'Size of the worker')
 	}
   stages {
 	
@@ -40,14 +40,14 @@ pipeline {
 		   
 			script{
 			    print "--------------*********-------------- Jenkins Main Pipeline Started --------------*********--------------" 
-			    if(params.gitBranch.isBlank() || params.project.isBlank() ||  !(params.project.toLowerCase() in SUPPORTED_PROJECTS)){
+			    if(params.gitBranch.isBlank() || params.businessGroup.isBlank()){
 			        CONTINUE = false
 			    }
 			    else{
 
 			        def gitBranch = ((params.gitBranch.split("/"))[1]).toLowerCase()
     			    ENV = gitBranch.equals('main') ? 'prod' : (gitBranch.equals('uat') ? 'uat' : 'sit')
-					BUSINESS_GROUP = params.project.toLowerCase() in ['cpq','mavenlink'] ? "Salesforce DevOps" : null
+					BUSINESS_GROUP = params.businessGroup.toLowerCase().equals('salesforce devops') ? 'Salesforce DevOps' : null 
         			CONTINUE = true
 			    }
 			}
@@ -112,9 +112,11 @@ pipeline {
 			    dir(JENKINS_SCRIPT_PATH) {
 					String key = ENV.equals('prod') ? CPQ_PROD_KEY : (ENV.equals('uat') ? CPQ_UAT_KEY : CPQ_SIT_KEY)
 					//print "-----------------------------" ++ (ENV.equals('prod') ? 'prod key' : (ENV.equals('uat') ? 'uat key' : 'sit key'))
+					String totalWorkers = params.totalWorkers ?: '1'
+					String workerSize = params.workerSize ? params.workerSize.toUpperCase() : 'MICRO'
 					String secureKey = ENV.equals('prod') ? CPQ_PROD_SECUREKEY : (ENV.equals('uat') ? CPQ_UAT_SECUREKEY : CPQ_SIT_SECUREKEY)
 					def deployParams = [chUser:ANYPOINT_CREDENTIALS_USR, chPassword:ANYPOINT_CREDENTIALS_PSW, env:ENV, chClientID:ORG_CREDS_USR , 
-										chClientSecret:ORG_CREDS_PSW, key:key, secureKey:secureKey, businessGroup: BUSINESS_GROUP, ddApiKey: DD_API_KEY] 
+										chClientSecret:ORG_CREDS_PSW, key:key, secureKey:secureKey, businessGroup: BUSINESS_GROUP, ddApiKey: DD_API_KEY,totalWorkers:totalWorkers,workerSize:workerSize] 
 					def mvn = load "maven.groovy"
 					dir(appPath) {
 						mvn.deploy(deployParams)
