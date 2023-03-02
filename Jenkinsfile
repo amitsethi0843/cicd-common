@@ -24,6 +24,9 @@ pipeline {
 		CPQ_SIT_KEY = credentials('CPQ_SIT_KEY')
 		CPQ_SIT_SECUREKEY = credentials('CPQ_SIT_SECUREKEY')
 		DD_API_KEY= credentials('DD_API_KEY')
+		
+		SFDO_SIT_KEY = credentials('sfdo_sit_secure_key')
+		SFDO_UAT_KEY = credentials('sfdo_uat_secure_key')
 	}
 	parameters {
 		string(name:'appPath', defaultValue:'',description:'Path to Project')
@@ -110,11 +113,20 @@ pipeline {
 			print ORG_CREDS_USR
 		    script {
 			    dir(JENKINS_SCRIPT_PATH) {
-					String key = ENV.equals('prod') ? CPQ_PROD_KEY : (ENV.equals('uat') ? CPQ_UAT_KEY : CPQ_SIT_KEY)
-					//print "-----------------------------" ++ (ENV.equals('prod') ? 'prod key' : (ENV.equals('uat') ? 'uat key' : 'sit key'))
+				String key = null
+				String secureKey = null
+					if(params.project.isBlank() || params.project.toLowerCase().equals('CPQ')){
+					 key = ENV.equals('prod') ? CPQ_PROD_KEY : (ENV.equals('uat') ? CPQ_UAT_KEY : CPQ_SIT_KEY)
+					 secureKey = ENV.equals('prod') ? CPQ_PROD_SECUREKEY : (ENV.equals('uat') ? CPQ_UAT_SECUREKEY : CPQ_SIT_SECUREKEY)
+					}
+					else
+					{
+						key = ENV.equals('prod') ? CPQ_PROD_KEY : (ENV.equals('uat') ? SFDO_UAT_KEY : SFDO_SIT_KEY)
+						secureKey = ENV.equals('prod') ? CPQ_PROD_SECUREKEY : (ENV.equals('uat') ? CPQ_UAT_SECUREKEY : CPQ_SIT_SECUREKEY)
+					}
 					String totalWorkers = params.totalWorkers ?: '1'
 					String workerSize = params.workerSize ? params.workerSize.toUpperCase() : 'MICRO'
-					String secureKey = ENV.equals('prod') ? CPQ_PROD_SECUREKEY : (ENV.equals('uat') ? CPQ_UAT_SECUREKEY : CPQ_SIT_SECUREKEY)
+					String 
 					def deployParams = [chUser:ANYPOINT_CREDENTIALS_USR, chPassword:ANYPOINT_CREDENTIALS_PSW, env:ENV, chClientID:ORG_CREDS_USR , 
 										chClientSecret:ORG_CREDS_PSW, key:key, secureKey:secureKey, businessGroup: BUSINESS_GROUP, ddApiKey: DD_API_KEY,totalWorkers:totalWorkers,workerSize:workerSize] 
 					def mvn = load "maven.groovy"
