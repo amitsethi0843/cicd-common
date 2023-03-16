@@ -1,7 +1,6 @@
 
 def ENV
 def CONTINUE = true
-def SUPPORTED_PROJECTS = ["cpq","mavenlink","salesforce devops","ciena","Enterprise Integration"]
 def BUSINESS_GROUP
 pipeline {
     
@@ -50,7 +49,7 @@ pipeline {
 
 			        def gitBranch = ((params.gitBranch.split("/"))[1]).toLowerCase()
     			    ENV = gitBranch.equals('main') ? 'prod' : (gitBranch.equals('uat') ? 'uat' : 'sit')
-					BUSINESS_GROUP = params.businessGroup.toLowerCase().equals('salesforce devops') ? 'Salesforce DevOps' : null 
+					BUSINESS_GROUP = params.businessGroup 
         			CONTINUE = true
 			    }
 			}
